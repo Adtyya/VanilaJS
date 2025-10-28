@@ -12,39 +12,115 @@
     <div id="navbar"></div>
 
     <!-- Main Content -->
-    <main
-      class="flex-grow flex flex-col items-center justify-center mt-12 px-4"
-    >
-      <div class="bg-white p-6 rounded-2xl shadow-lg w-full max-w-md">
+    <main class="flex-grow flex flex-col items-center mt-12 px-4">
+      <div class="bg-white p-6 rounded-2xl shadow-lg w-full max-w-4xl">
         <h2 class="text-xl font-semibold text-gray-700 mb-6 text-center">
           Informasi Stok Bahan Ajar
         </h2>
 
-        <!-- Card Stok -->
-        <div class="flex flex-col items-center">
-          <img
-            src="img/pengantar_komunikasi.jpg"
-            alt="Cover Buku"
-            class="w-40 h-56 object-cover rounded-lg shadow-md mb-4"
-          />
-          <h3 class="text-lg font-semibold text-gray-800 mb-1">
-            Pengantar Ilmu Komunikasi
-          </h3>
-          <p class="text-gray-600 text-sm mb-4">Kode Barang: ASIP4301</p>
-
-          <div class="w-full space-y-2 text-sm text-gray-700">
-            <p><span class="font-medium">Kode Lokasi:</span> 0TMP01</p>
-            <p><span class="font-medium">Jenis Barang:</span> BMP</p>
-            <p><span class="font-medium">Edisi:</span> 2</p>
-            <p>
-              <span class="font-medium">Stok Tersedia:</span>
-              <span class="text-green-600 font-semibold">548</span> eksemplar
-            </p>
-          </div>
-        </div>
+        <!-- Grid Card -->
+        <div
+          id="stokContainer"
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+        ></div>
       </div>
     </main>
 
     <script type="module" src="/src/main.js"></script>
+
+    <script>
+      // Dummy Data
+      var dataBahanAjar = [
+        {
+          kodeLokasi: "0TMP01",
+          kodeBarang: "ASIP4301",
+          namaBarang: "Pengantar Ilmu Komunikasi",
+          jenisBarang: "BMP",
+          edisi: "2",
+          stok: 548,
+          cover: "https://placehold.co/600x400",
+        },
+        {
+          kodeLokasi: "0JKT01",
+          kodeBarang: "EKMA4216",
+          namaBarang: "Manajemen Keuangan",
+          jenisBarang: "BMP",
+          edisi: "3",
+          stok: 392,
+          cover: "https://placehold.co/600x400",
+        },
+        {
+          kodeLokasi: "0SBY02",
+          kodeBarang: "EKMA4310",
+          namaBarang: "Kepemimpinan",
+          jenisBarang: "BMP",
+          edisi: "1",
+          stok: 278,
+          cover: "https://placehold.co/600x400",
+        },
+        {
+          kodeLokasi: "0MLG01",
+          kodeBarang: "BIOL4211",
+          namaBarang: "Mikrobiologi Dasar",
+          jenisBarang: "BMP",
+          edisi: "2",
+          stok: 165,
+          cover: "https://placehold.co/600x400",
+        },
+        {
+          kodeLokasi: "0UPBJJBDG",
+          kodeBarang: "PAUD4401",
+          namaBarang: "Perkembangan Anak Usia Dini",
+          jenisBarang: "BMP",
+          edisi: "4",
+          stok: 204,
+          cover: "https://placehold.co/600x400",
+        },
+      ];
+
+      const container = document.getElementById("stokContainer");
+
+      dataBahanAjar.forEach((item) => {
+        const card = document.createElement("div");
+        card.className =
+          "bg-gray-50 p-4 rounded-xl shadow hover:shadow-md transition duration-300 flex flex-col items-center";
+
+        card.innerHTML = `
+          <img
+            src="${item.cover}"
+            alt="${item.namaBarang}"
+            class="w-36 h-52 object-cover rounded-lg shadow mb-3"
+          />
+          <h3 class="text-lg font-semibold text-gray-800 mb-1 text-center">
+            ${item.namaBarang}
+          </h3>
+          <p class="text-gray-600 text-sm mb-2 text-center">Kode Barang: ${
+            item.kodeBarang
+          }</p>
+
+          <div class="w-full space-y-1 text-sm text-gray-700">
+            <p><span class="font-medium">Kode Lokasi:</span> ${
+              item.kodeLokasi
+            }</p>
+            <p><span class="font-medium">Jenis Barang:</span> ${
+              item.jenisBarang
+            }</p>
+            <p><span class="font-medium">Edisi:</span> ${item.edisi}</p>
+            <p>
+              <span class="font-medium">Stok Tersedia:</span>
+              <span class="${
+                item.stok > 300
+                  ? "text-green-600"
+                  : item.stok > 200
+                  ? "text-yellow-600"
+                  : "text-red-600"
+              } font-semibold">${item.stok}</span> eksemplar
+            </p>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    </script>
   </body>
 </html>

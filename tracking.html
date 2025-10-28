@@ -39,10 +39,11 @@
         <!-- Card Tracking Result -->
         <div id="trackingCard" class="hidden">
           <div class="border-t border-gray-200 my-4"></div>
+
           <h3 class="text-lg font-semibold text-gray-700 mb-2">
             Nama Mahasiswa
           </h3>
-          <p class="text-gray-600 mb-2">Aditya Fitriansyah</p>
+          <p id="namaMahasiswa" class="text-gray-600 mb-2"></p>
 
           <p class="text-sm font-medium text-gray-600 mb-1">
             Status Pengiriman:
@@ -51,36 +52,153 @@
             <div
               id="progressBar"
               class="bg-blue-600 h-3 rounded-full"
-              style="width: 60%"
+              style="width: 0%"
             ></div>
           </div>
-          <p class="text-sm text-gray-500 mb-4">Dalam Pengiriman (60%)</p>
+          <p id="statusText" class="text-sm text-gray-500 mb-4"></p>
 
-          <div class="grid grid-cols-2 gap-2 text-sm text-gray-600">
-            <p><span class="font-medium">Ekspedisi:</span> JNE Express</p>
-            <p><span class="font-medium">Tanggal Kirim:</span> 20 Okt 2025</p>
-            <p><span class="font-medium">Jenis Paket:</span> Reguler</p>
-            <p><span class="font-medium">Total Pembayaran:</span> Rp 25.000</p>
+          <div class="grid grid-cols-2 gap-2 text-sm text-gray-600 mb-4">
+            <p>
+              <span class="font-medium">Ekspedisi:</span>
+              <span id="ekspedisi"></span>
+            </p>
+            <p>
+              <span class="font-medium">Tanggal Kirim:</span>
+              <span id="tanggalKirim"></span>
+            </p>
+            <p>
+              <span class="font-medium">Jenis Paket:</span>
+              <span id="paket"></span>
+            </p>
+            <p>
+              <span class="font-medium">Total Pembayaran:</span>
+              <span id="total"></span>
+            </p>
           </div>
+
+          <h4 class="text-md font-semibold text-gray-700 mb-2">
+            Riwayat Perjalanan:
+          </h4>
+          <ul
+            id="riwayatPerjalanan"
+            class="space-y-2 text-sm text-gray-600"
+          ></ul>
+        </div>
+
+        <div id="notFound" class="hidden text-center text-red-500 mt-4">
+          Nomor DO tidak ditemukan.
         </div>
       </div>
     </main>
 
     <script type="module" src="/src/main.js"></script>
+
     <script>
+      const dataTracking = {
+        2023001234: {
+          nomorDO: "2023001234",
+          nama: "Rina Wulandari",
+          status: "Dalam Perjalanan",
+          ekspedisi: "JNE",
+          tanggalKirim: "2025-08-25",
+          paket: "0JKT01",
+          total: "Rp 180.000",
+          perjalanan: [
+            {
+              waktu: "2025-08-25 10:12:20",
+              keterangan:
+                "Penerimaan di Loket: TANGERANG SELATAN. Pengirim: Universitas Terbuka",
+            },
+            {
+              waktu: "2025-08-25 14:07:56",
+              keterangan: "Tiba di Hub: TANGERANG SELATAN",
+            },
+            {
+              waktu: "2025-08-25 18:30:20",
+              keterangan: "Diteruskan ke Kantor Jakarta Selatan",
+            },
+          ],
+        },
+        2023005678: {
+          nomorDO: "2023005678",
+          nama: "Agus Pranoto",
+          status: "Selesai Dikirim",
+          ekspedisi: "Pos Indonesia",
+          tanggalKirim: "2025-08-25",
+          paket: "0UPBJJBDG",
+          total: "Rp 220.000",
+          perjalanan: [
+            {
+              waktu: "2025-08-25 10:12:20",
+              keterangan:
+                "Penerimaan di Loket: TANGERANG SELATAN. Pengirim: Universitas Terbuka",
+            },
+            {
+              waktu: "2025-08-25 14:07:56",
+              keterangan: "Tiba di Hub: TANGERANG SELATAN",
+            },
+            {
+              waktu: "2025-08-25 16:30:10",
+              keterangan: "Diteruskan ke Kantor Kota Bandung",
+            },
+            {
+              waktu: "2025-08-26 12:15:33",
+              keterangan: "Tiba di Hub: Kota BANDUNG",
+            },
+            {
+              waktu: "2025-08-26 15:06:12",
+              keterangan: "Proses antar ke Cimahi",
+            },
+            {
+              waktu: "2025-08-26 20:00:00",
+              keterangan: "Selesai Antar. Penerima: Agus Pranoto",
+            },
+          ],
+        },
+      };
+
       const form = document.getElementById("trackingForm");
       const card = document.getElementById("trackingCard");
+      const notFound = document.getElementById("notFound");
 
       form.addEventListener("submit", function (e) {
         e.preventDefault();
         const doNumber = document.getElementById("doNumber").value.trim();
 
-        if (doNumber === "") {
-          alert("Masukkan nomor delivery order!");
+        card.classList.add("hidden");
+        notFound.classList.add("hidden");
+
+        const data = dataTracking[doNumber];
+        if (!data) {
+          notFound.classList.remove("hidden");
           return;
         }
 
-        // Simulasi menampilkan data hasil tracking
+        document.getElementById("namaMahasiswa").textContent = data.nama;
+        document.getElementById("ekspedisi").textContent = data.ekspedisi;
+        document.getElementById("tanggalKirim").textContent = data.tanggalKirim;
+        document.getElementById("paket").textContent = data.paket;
+        document.getElementById("total").textContent = data.total;
+        document.getElementById("statusText").textContent = data.status;
+
+        const progress = Math.min(
+          Math.round((data.perjalanan.length / 6) * 100),
+          100
+        );
+        document.getElementById("progressBar").style.width = progress + "%";
+
+        const riwayat = document.getElementById("riwayatPerjalanan");
+        riwayat.innerHTML = "";
+        data.perjalanan.forEach((item) => {
+          const li = document.createElement("li");
+          li.innerHTML = `
+            <div class="bg-gray-50 p-2 rounded-lg border border-gray-200">
+              <p class="font-medium">${item.waktu}</p>
+              <p>${item.keterangan}</p>
+            </div>`;
+          riwayat.appendChild(li);
+        });
+
         card.classList.remove("hidden");
       });
     </script>

@@ -19,7 +19,7 @@
         <h2 id="greeting" class="text-2xl font-semibold text-gray-700 mb-2">
           Selamat Datang!
         </h2>
-        <p class="text-gray-500">Ini adalah halaman Dashboard sederhana.</p>
+        <p class="text-gray-500">Ini adalah Dashboard.</p>
       </div>
     </main>
 
@@ -31,10 +31,10 @@
       const hour = now.getHours();
 
       let greeting = "Selamat Datang";
-      if (hour >= 5 && hour < 11) greeting = "Selamat Pagi 🌤️";
-      else if (hour >= 11 && hour < 15) greeting = "Selamat Siang ☀️";
-      else if (hour >= 15 && hour < 18) greeting = "Selamat Sore 🌇";
-      else greeting = "Selamat Malam 🌙";
+      if (hour >= 5 && hour < 11) greeting = "Selamat Pagi";
+      else if (hour >= 11 && hour < 15) greeting = "Selamat Siang";
+      else if (hour >= 15 && hour < 18) greeting = "Selamat Sore";
+      else greeting = "Selamat Malam";
 
       greetingEl.textContent = greeting;
     </script>

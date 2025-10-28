@@ -1,19 +1,89 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <link rel="stylesheet" href="/src/style.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script>
+      // Data pengguna simulasi
+      const dataPengguna = [
+        {
+          id: 1,
+          nama: "Rina Wulandari",
+          email: "rina@ut.ac.id",
+          password: "rina123",
+          role: "UPBJJ-UT",
+          lokasi: "UPBJJ Jakarta",
+        },
+        {
+          id: 2,
+          nama: "Agus Pranoto",
+          email: "agus@ut.ac.id",
+          password: "agus123",
+          role: "UPBJJ-UT",
+          lokasi: "UPBJJ Makassar",
+        },
+        {
+          id: 3,
+          nama: "Siti Marlina",
+          email: "siti@ut.ac.id",
+          password: "siti123",
+          role: "Puslaba",
+          lokasi: "Pusat",
+        },
+        {
+          id: 4,
+          nama: "Doni Setiawan",
+          email: "doni@ut.ac.id",
+          password: "doni123",
+          role: "Fakultas",
+          lokasi: "FISIP",
+        },
+        {
+          id: 5,
+          nama: "Admin SITTA",
+          email: "admin@ut.ac.id",
+          password: "admin123",
+          role: "Administrator",
+          lokasi: "Pusat",
+        },
+      ];
+
+      function login(event) {
+        event.preventDefault();
+
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+
+        const user = dataPengguna.find(
+          (u) => u.email === email && u.password === password
+        );
+
+        if (user) {
+          alert(`Selamat datang, ${user.nama}!`);
+          localStorage.setItem("userLogin", JSON.stringify(user));
+          localStorage.setItem("isLoggedIn", "true");
+          window.location.href = "dashboard.html";
+        } else {
+          alert("Email atau password salah!");
+        }
+      }
+    </script>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
   </head>
+
   <body class="bg-gray-100 flex items-center justify-center min-h-screen">
     <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-sm">
       <h2 class="text-2xl font-semibold text-center mb-6 text-gray-700">
         Login
       </h2>
 
-      <form id="loginForm" class="space-y-4">
+      <form id="loginForm" onsubmit="login(event)" class="space-y-4">
         <div>
           <label
             for="email"
@@ -54,24 +124,5 @@
         </button>
       </form>
     </div>
-
-    <script type="module" src="/src/main.js"></script>
-    <script>
-      document
-        .getElementById("loginForm")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
-
-          const email = document.getElementById("email").value;
-          const password = document.getElementById("password").value;
-
-          if (email === "admin@example.com" && password === "123456") {
-            alert("Login berhasil!");
-            window.location.href = "dashboard.html";
-          } else {
-            alert("Email atau password salah!");
-          }
-        });
-    </script>
   </body>
 </html>
